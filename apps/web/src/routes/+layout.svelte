@@ -15,7 +15,7 @@
 
 <svelte:head>
 	<link rel="icon" href={favicon} />
-	<title>FjordSend — Säker filöverföring</title>
+	<title>Keira — Säker filöverföring</title>
 	<link rel="preconnect" href="https://fonts.googleapis.com" />
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
 	<link
@@ -46,7 +46,7 @@
 
 	<header class="shell__header">
 		<a href="/" class="shell__logo">
-			<span class="shell__logo-mark">Fjord</span><span class="shell__logo-accent">Send</span>
+			<span class="shell__logo-mark">Kei</span><span class="shell__logo-accent">ra</span>
 		</a>
 		<TopNavBar session={data.session} />
 	</header>
@@ -58,7 +58,7 @@
 	<footer class="shell__footer">
 		<div class="shell__footer-left">
 			<BackgroundVideoControls video={bgVideo} />
-			<span class="shell__footer-brand">Heinz</span>
+			<span class="shell__footer-brand">Keira</span>
 			<BackgroundVideoCountdown video={bgVideo} />
 		</div>
 		<span class="shell__footer-credit">Skapat och förbehållet av CERCINO</span>
@@ -121,7 +121,7 @@
 
 	.shell__logo {
 		font-family: var(--font-display);
-		font-size: 1.35rem;
+		font-size: clamp(1.7rem, 3vw, 2.4rem);
 		font-weight: 700;
 		letter-spacing: -0.02em;
 		text-decoration: none;

@@ -31,14 +31,14 @@
 </script>
 
 <svelte:head>
-	<title>Logga in — FjordSend</title>
+	<title>Logga in — Keira</title>
 </svelte:head>
 
 <section class="auth-page">
 	<div class="auth-page__panel glass">
 		<p class="auth-page__kicker">Konto</p>
 		<h1 class="auth-page__title">Logga in</h1>
-		<p class="auth-page__sub">Välkommen tillbaka till FjordSend.</p>
+		<p class="auth-page__sub">Välkommen tillbaka till Keira.</p>
 
 		<form class="auth-page__form" onsubmit={handleSubmit}>
 			<label class="glass-label">

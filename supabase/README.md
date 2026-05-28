@@ -1,4 +1,4 @@
-# Supabase database setup (FjordSend)
+# Supabase database setup (Keira)
 
 The API expects these PostgreSQL tables:
 
@@ -14,7 +14,7 @@ Row Level Security is enabled with **no public policies** so the browser publish
 ## Option A — SQL Editor (no CLI)
 
 1. Open [Supabase Dashboard](https://supabase.com/dashboard) → your project → **SQL** → **New query**.
-2. Paste the contents of `supabase/migrations/20260519120000_fjordsend_schema.sql`.
+2. Paste the contents of `supabase/migrations/20260519120000_keira_schema.sql`.
 3. Click **Run**.
 
 You should see four tables under **Table Editor**.
@@ -48,7 +48,7 @@ npx supabase db push
 
 ## Optional quickstart table
 
-The `countries` demo table is **not** required for FjordSend. You can delete `/supabase-demo` on the web app when done testing the Supabase client.
+The `countries` demo table is **not** required for Keira. You can delete `/supabase-demo` on the web app when done testing the Supabase client.
 
 ## Verify
 

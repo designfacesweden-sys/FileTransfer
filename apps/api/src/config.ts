@@ -39,12 +39,12 @@ export const config = {
     endpoint: process.env.R2_ENDPOINT ?? '',
     publicUrl: process.env.R2_PUBLIC_URL ?? ''
   },
-  supportInbox: process.env.SUPPORT_INBOX ?? 'support@fjordsend.com',
-  supportFromEmail: process.env.SUPPORT_FROM_EMAIL ?? 'FjordSend <onboarding@resend.dev>',
+  supportInbox: process.env.SUPPORT_INBOX ?? 'support@keira.com',
+  supportFromEmail: process.env.SUPPORT_FROM_EMAIL ?? 'Keira <onboarding@resend.dev>',
   transferFromEmail:
     process.env.TRANSFER_FROM_EMAIL ??
     process.env.SUPPORT_FROM_EMAIL ??
-    'FjordSend <onboarding@resend.dev>',
+    'Keira <onboarding@resend.dev>',
   resendApiKey: process.env.RESEND_API_KEY ?? '',
   /** Resend account owner email — only recipient allowed in sandbox mode */
   resendAccountEmail: process.env.RESEND_ACCOUNT_EMAIL ?? process.env.SUPPORT_INBOX ?? '',

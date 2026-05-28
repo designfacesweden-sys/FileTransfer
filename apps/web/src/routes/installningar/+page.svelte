@@ -42,7 +42,7 @@
 </script>
 
 <svelte:head>
-	<title>Inställningar — FjordSend</title>
+	<title>Inställningar — Keira</title>
 </svelte:head>
 
 <section class="settings-page">

@@ -1,4 +1,4 @@
-# Deploy FjordSend to production
+# Deploy Keira to production
 
 This guide sets up **PostgreSQL**, **Redis**, the **API**, the **web app**, and **HTTPS** (via Caddy) on a single server using Docker.
 
@@ -7,7 +7,7 @@ This guide sets up **PostgreSQL**, **Redis**, the **API**, the **web app**, and 
 | Item | Notes |
 |------|--------|
 | **VPS** | 2 GB+ RAM (Hetzner, DigitalOcean, Linode, etc.) |
-| **Domain** | e.g. `fjordsend.com` |
+| **Domain** | e.g. `keira.com` |
 | **DNS** | `A` record → server IP for `@` and `api` |
 | **Docker** | [Install Docker](https://docs.docker.com/engine/install/) on the server |
 | **Google OAuth** | Web client with production redirect URI |
@@ -18,12 +18,12 @@ From the repo root:
 
 ```bash
 # Optional: set your domain before generating
-DOMAIN=fjordsend.com npm run provision
+DOMAIN=keira.com npm run provision
 ```
 
 This creates `.env.production` with:
 
-- PostgreSQL user `fjordsend`, random password, database `fjordsend`
+- PostgreSQL user `keira`, random password, database `keira`
 - `JWT_SECRET` and `AUTH_SECRET`
 - URLs derived from `DOMAIN`
 
@@ -54,8 +54,8 @@ If you use `www`, add `www.yourdomain.com` to Caddy or redirect in DNS.
 ## 4. Deploy on the server
 
 ```bash
-git clone <your-repo> fjordsend
-cd fjordsend
+git clone <your-repo> keira
+cd keira
 cp .env.production /path/on/server/.env.production   # or run provision on server
 
 npm run docker:prod:up
@@ -126,7 +126,7 @@ docker compose -f docker-compose.prod.yml --env-file .env.production exec api no
 
 # Postgres shell
 docker compose -f docker-compose.prod.yml --env-file .env.production exec postgres \
-  psql -U fjordsend -d fjordsend
+  psql -U keira -d keira
 ```
 
 ## Alternative: split hosting

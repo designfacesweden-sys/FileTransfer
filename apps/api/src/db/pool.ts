@@ -20,10 +20,19 @@ function createMemoryPool(): pg.Pool {
   });
 
   const schema = readFileSync(join(__dirname, 'schema.sql'), 'utf8');
-  const statements = schema
+  const sanitizedSchema = schema
+    .split('\n')
+    .filter((line) => !line.trim().startsWith('--'))
+    .join('\n');
+  const statements = sanitizedSchema
     .split(';')
     .map((s) => s.trim())
-    .filter((s) => s.length > 0 && !s.toUpperCase().startsWith('CREATE EXTENSION'));
+    .filter(
+      (s) =>
+        s.length > 0 &&
+        !s.toUpperCase().startsWith('CREATE EXTENSION') &&
+        !s.toUpperCase().includes('ENABLE ROW LEVEL SECURITY')
+    );
 
   for (const statement of statements) {
     db.public.none(`${statement};`);

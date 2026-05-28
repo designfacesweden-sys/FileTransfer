@@ -1,4 +1,4 @@
--- FjordSend application schema (transfers, files, users, support)
+-- Keira application schema (transfers, files, users, support)
 -- Idempotent: safe to run multiple times in Supabase SQL Editor or via `npm run db:supabase`
 
 CREATE EXTENSION IF NOT EXISTS "pgcrypto";

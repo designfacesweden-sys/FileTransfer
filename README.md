@@ -1,4 +1,4 @@
-# FjordSend — Privacy-first file transfer
+# Keira — Privacy-first file transfer
 
 A modern Scandinavian-style file transfer platform (WeTransfer / Sprend competitor) with resumable uploads, expiring links, and EU privacy positioning.
 
@@ -108,7 +108,7 @@ Compete on **UX + trust**, not storage volume:
 - Media professionals, agencies, municipalities
 - Apple-like simplicity + branded download pages
 
-Working name: **FjordSend** (rename anytime in `apps/web`).
+Working name: **Keira**.
 
 ## Cost notes
 

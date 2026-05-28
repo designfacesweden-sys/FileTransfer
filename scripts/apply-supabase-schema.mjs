@@ -43,7 +43,7 @@ const pool = new pg.Pool({
 
 try {
 	await pool.query(sql);
-	console.log('FjordSend schema applied successfully.');
+	console.log('Keira schema applied successfully.');
 	console.log('Tables: transfers, files, users, support_requests');
 } catch (err) {
 	console.error('Migration failed:', err);

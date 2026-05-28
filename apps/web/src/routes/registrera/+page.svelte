@@ -45,14 +45,14 @@
 </script>
 
 <svelte:head>
-	<title>Registrera dig — FjordSend</title>
+	<title>Registrera dig — Keira</title>
 </svelte:head>
 
 <section class="auth-page">
 	<div class="auth-page__panel glass">
 		<p class="auth-page__kicker">Konto</p>
 		<h1 class="auth-page__title">Registrera dig</h1>
-		<p class="auth-page__sub">Skapa ett gratis FjordSend-konto.</p>
+		<p class="auth-page__sub">Skapa ett gratis Keira-konto.</p>
 
 		<form class="auth-page__form" onsubmit={handleSubmit}>
 			<label class="glass-label">

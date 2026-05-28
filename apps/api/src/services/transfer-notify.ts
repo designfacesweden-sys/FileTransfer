@@ -66,7 +66,7 @@ function buildTransferHtml(payload: TransferEmailPayload): string {
   </p>
   <p style="margin:0;font-size:0.875rem;color:#78716c">Länken går ut ${escapeHtml(formatExpiry(payload.expiresAt))}.</p>
   ${passwordNote}
-  <p style="margin:1.5rem 0 0;font-size:0.75rem;color:#a8a29e">FjordSend — säker filöverföring</p>
+  <p style="margin:1.5rem 0 0;font-size:0.75rem;color:#a8a29e">Keira — säker filöverföring</p>
 </body>
 </html>`;
 }

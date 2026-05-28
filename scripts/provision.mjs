@@ -20,10 +20,10 @@ if (existsSync(outPath)) {
 	process.exit(1);
 }
 
-const domain = process.env.DOMAIN ?? 'fjordsend.example.com';
-const postgresUser = 'fjordsend';
+const domain = process.env.DOMAIN ?? 'keira.example.com';
+const postgresUser = 'keira';
 const postgresPassword = hex(24);
-const postgresDb = 'fjordsend';
+const postgresDb = 'keira';
 const jwtSecret = hex(32);
 const authSecret = hex(32);
 
@@ -77,7 +77,7 @@ AUTH_GOOGLE_SECRET=
 
 # --- Support email (optional) ---
 SUPPORT_INBOX=support@${domain}
-SUPPORT_FROM_EMAIL=FjordSend <noreply@${domain}>
+SUPPORT_FROM_EMAIL=Keira <noreply@${domain}>
 RESEND_API_KEY=
 SUPPORT_WEBHOOK_URL=
 `;

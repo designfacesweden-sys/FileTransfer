@@ -86,7 +86,7 @@
 				'Prioriterad support och SLA'
 			],
 			cta: 'Kontakta sälj',
-			href: 'mailto:hello@fjordsend.com',
+			href: 'mailto:hello@keira.com',
 			disabled: false
 		}
 		];
@@ -94,7 +94,7 @@
 </script>
 
 <svelte:head>
-	<title>Priser — FjordSend</title>
+	<title>Priser — Keira</title>
 </svelte:head>
 
 <section class="pricing-page">

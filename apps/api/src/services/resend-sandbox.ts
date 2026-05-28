@@ -37,7 +37,7 @@ export function resolveResendRecipient(intended: string, from?: string): Resolve
 
 	throw new Error(
 		`Resend test mode: with onboarding@resend.dev you can only send to ${allowed}. ` +
-			`Verify cercino.se at resend.com/domains and set TRANSFER_FROM_EMAIL to e.g. FjordSend <noreply@cercino.se>, ` +
+			`Verify cercino.se at resend.com/domains and set TRANSFER_FROM_EMAIL to e.g. Keira <noreply@cercino.se>, ` +
 			`or add RESEND_DEV_REDIRECT_TO=${allowed} in apps/api/.env for local testing.`
 	);
 }

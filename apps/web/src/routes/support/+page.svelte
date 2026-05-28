@@ -41,7 +41,7 @@
 </script>
 
 <svelte:head>
-	<title>Support — FjordSend</title>
+	<title>Support — Keira</title>
 </svelte:head>
 
 <section class="support">

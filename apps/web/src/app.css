@@ -1,0 +1,117 @@
+@import 'tailwindcss';
+
+@theme {
+	--font-display: 'Outfit', system-ui, sans-serif;
+	--font-sans: 'Inter', system-ui, sans-serif;
+	--color-cream: #faf6f0;
+	--color-gold: #ffffff;
+	--color-gold-dim: #f0ebe5;
+	--color-mint: #6ee7b7;
+	--color-ink: #0c0a09;
+	--color-glass: rgba(12, 10, 9, 0.62);
+	--color-glass-border: rgba(255, 255, 255, 0.14);
+	--color-glass-highlight: rgba(255, 255, 255, 0.06);
+}
+
+html,
+body {
+	height: 100%;
+	overflow: hidden;
+}
+
+body {
+	font-family: var(--font-sans);
+	color: var(--color-cream);
+	background: #000;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-family: var(--font-display);
+	letter-spacing: -0.02em;
+}
+
+/* Shared glass surface */
+.glass {
+	background: var(--color-glass);
+	backdrop-filter: blur(28px) saturate(1.2);
+	-webkit-backdrop-filter: blur(28px) saturate(1.2);
+	border: 1px solid var(--color-glass-border);
+	box-shadow:
+		0 24px 80px rgba(0, 0, 0, 0.45),
+		inset 0 1px 0 var(--color-glass-highlight);
+}
+
+.glass-input {
+	width: 100%;
+	border-radius: 0.65rem;
+	border: 1px solid rgba(255, 255, 255, 0.12);
+	background: rgba(0, 0, 0, 0.35);
+	padding: 0.65rem 0.85rem;
+	font-size: 0.875rem;
+	color: var(--color-cream);
+	outline: none;
+	transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.glass-input::placeholder {
+	color: rgba(250, 246, 240, 0.35);
+}
+
+.glass-input:focus {
+	border-color: rgba(255, 255, 255, 0.55);
+	box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.12);
+}
+
+.glass-input:disabled {
+	opacity: 0.5;
+}
+
+.glass-label {
+	display: block;
+	font-size: 0.6875rem;
+	font-weight: 600;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	color: rgba(250, 246, 240, 0.5);
+}
+
+.btn-primary {
+	border: none;
+	border-radius: 0.65rem;
+	background: #ffffff;
+	color: #0c0a09;
+	font-weight: 700;
+	font-size: 0.875rem;
+	cursor: pointer;
+	transition: filter 0.2s ease, transform 0.15s ease;
+}
+
+.btn-primary:disabled {
+	opacity: 0.45;
+	cursor: not-allowed;
+}
+
+.btn-primary:not(:disabled):active {
+	transform: scale(0.98);
+}
+
+.btn-ghost {
+	border-radius: 0.65rem;
+	border: 1px solid rgba(255, 255, 255, 0.18);
+	background: transparent;
+	color: rgba(250, 246, 240, 0.75);
+	font-size: 0.875rem;
+	font-weight: 500;
+	cursor: pointer;
+}
+
+.btn-ghost:disabled {
+	opacity: 0.45;
+}

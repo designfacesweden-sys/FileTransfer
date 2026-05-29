@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Session } from '@auth/sveltekit';
-	import { signOut } from '@auth/sveltekit/client';
+	import { logout } from '$lib/auth-client';
 	import { PLAN_LABELS, type PlanId } from '@filetransfer/shared';
 	import LoginWidget from '$lib/components/LoginWidget.svelte';
 
@@ -53,9 +53,9 @@
 		profileOpen = false;
 	}
 
-	function logout() {
+	function handleLogout() {
 		closeProfile();
-		signOut({ callbackUrl: '/' });
+		logout();
 	}
 
 	function userInitial(user: NonNullable<Session['user']>) {
@@ -141,7 +141,7 @@
 						<a href="/pricing" role="menuitem" class="account-menu__link" onclick={closeProfile}>
 							Prenumeration
 						</a>
-						<button type="button" role="menuitem" class="account-menu__link account-menu__link--out" onclick={logout}>
+						<button type="button" role="menuitem" class="account-menu__link account-menu__link--out" onclick={handleLogout}>
 							Logga ut
 						</button>
 					</div>

@@ -13,6 +13,16 @@ import type {
 
 const base = PUBLIC_API_URL || 'http://localhost:3001';
 
+async function readJson<T>(res: Response): Promise<T> {
+  const contentType = res.headers.get('content-type') ?? '';
+  if (!contentType.includes('application/json')) {
+    throw new Error(
+      'API svarade med HTML i stället för JSON. Kontrollera PUBLIC_API_URL (Render API-URL, inte keira.se).'
+    );
+  }
+  return res.json() as Promise<T>;
+}
+
 export async function createTransfer(body: CreateTransferRequest): Promise<CreateTransferResponse> {
   const res = await fetch(`${base}/api/transfers`, {
     method: 'POST',
@@ -21,22 +31,22 @@ export async function createTransfer(body: CreateTransferRequest): Promise<Creat
   });
 
   if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
+    const err = await readJson<{ error?: string; message?: string }>(res).catch(() => ({}));
     throw new Error(translateApiError(err.error ?? err.message ?? 'Kunde inte skapa överföring'));
   }
 
-  return res.json();
+  return readJson<CreateTransferResponse>(res);
 }
 
 export async function notifyTransferByEmail(token: string): Promise<TransferNotifyResponse> {
   const res = await fetch(`${base}/api/transfers/${token}/notify`, { method: 'POST' });
 
   if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
+    const err = await readJson<{ error?: string; message?: string }>(res).catch(() => ({}));
     throw new Error(translateApiError(err.error ?? err.message ?? 'Kunde inte skicka e-post'));
   }
 
-  return res.json();
+  return readJson<TransferNotifyResponse>(res);
 }
 
 export async function getTransfer(token: string, password?: string): Promise<TransferPublic> {
@@ -44,11 +54,11 @@ export async function getTransfer(token: string, password?: string): Promise<Tra
   const res = await fetch(`${base}/api/transfers/${token}${params}`);
 
   if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
+    const err = await readJson<{ error?: string; message?: string }>(res).catch(() => ({}));
     throw new Error(translateApiError(err.error ?? 'Kunde inte ladda överföringen'));
   }
 
-  return res.json();
+  return readJson<TransferPublic>(res);
 }
 
 export async function submitSupport(body: SupportRequest): Promise<SupportRequestResponse> {
@@ -59,11 +69,11 @@ export async function submitSupport(body: SupportRequest): Promise<SupportReques
   });
 
   if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
+    const err = await readJson<{ error?: string; message?: string }>(res).catch(() => ({}));
     throw new Error(translateApiError(err.error ?? 'Kunde inte skicka supportförfrågan'));
   }
 
-  return res.json();
+  return readJson<SupportRequestResponse>(res);
 }
 
 export async function registerUser(body: RegisterRequest): Promise<AuthUser> {
@@ -74,11 +84,11 @@ export async function registerUser(body: RegisterRequest): Promise<AuthUser> {
   });
 
   if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
+    const err = await readJson<{ error?: string; message?: string }>(res).catch(() => ({}));
     throw new Error(err.error ?? 'Registreringen misslyckades');
   }
 
-  return res.json();
+  return readJson<AuthUser>(res);
 }
 
 export function downloadUrl(fileId: string, password?: string): string {

@@ -11,6 +11,8 @@
 		type ExpiryPresetId,
 		type PlanId
 	} from '@filetransfer/shared';
+	import { PUBLIC_CLIENT_AUTH } from '$env/static/public';
+	import { clientUser } from '$lib/stores/session';
 
 	let { data } = $props();
 
@@ -20,7 +22,15 @@
 	let recipientEmail = $state('');
 	let senderEmail = $state('');
 
-	const userPlan = $derived((data.session?.user?.plan ?? 'free') as PlanId);
+	const session = $derived(
+		PUBLIC_CLIENT_AUTH === 'true'
+			? $clientUser
+				? { user: { plan: $clientUser.plan } }
+				: null
+			: data.session
+	);
+
+	const userPlan = $derived((session?.user?.plan ?? 'free') as PlanId);
 	const expiryOptions = $derived(getExpiryOptionsForPlan(userPlan));
 	const planConfig = $derived(PLANS[userPlan]);
 

@@ -5,8 +5,14 @@
 	import TopNavBar from '$lib/components/TopNavBar.svelte';
 	import BackgroundVideoControls from '$lib/components/BackgroundVideoControls.svelte';
 	import BackgroundVideoCountdown from '$lib/components/BackgroundVideoCountdown.svelte';
+	import { PUBLIC_CLIENT_AUTH } from '$env/static/public';
+	import { clientUser, clientUserToSession } from '$lib/stores/session';
 
 	let { children, data } = $props();
+
+	const session = $derived(
+		PUBLIC_CLIENT_AUTH === 'true' ? clientUserToSession($clientUser) : data.session
+	);
 
 	let bgVideo = $state<HTMLVideoElement | null>(null);
 
@@ -48,7 +54,7 @@
 		<a href="/" class="shell__logo">
 			<span class="shell__logo-mark">Kei</span><span class="shell__logo-accent">ra</span>
 		</a>
-		<TopNavBar session={data.session} />
+		<TopNavBar session={session} />
 	</header>
 
 	<main class="shell__main">

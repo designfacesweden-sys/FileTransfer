@@ -113,7 +113,12 @@ export async function transferRoutes(app: FastifyInstance) {
       }
     }
 
-    const files = await pool.query(
+    const files = await pool.query<{
+      id: string;
+      name: string;
+      size: string;
+      mime_type: string | null;
+    }>(
       `SELECT id, name, size, mime_type FROM files WHERE transfer_id = $1 ORDER BY created_at`,
       [row.id]
     );
@@ -198,7 +203,10 @@ export async function transferRoutes(app: FastifyInstance) {
         senderEmail: row.sender_email,
         downloadUrl: `${config.webPublicUrl}/d/${row.token}`,
         expiresAt: row.expires_at.toISOString(),
-        files: files.rows.map((f) => ({ name: f.name, size: Number(f.size) })),
+        files: files.rows.map((f: { name: string; size: string }) => ({
+          name: f.name,
+          size: Number(f.size)
+        })),
         title: row.title,
         message: row.message,
         passwordProtected: Boolean(row.password_hash)

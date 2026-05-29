@@ -15,7 +15,9 @@
     "provision": "node scripts/provision.mjs",
     "docker:prod:up": "docker compose -f docker-compose.prod.yml --env-file .env.production up -d --build",
     "docker:prod:down": "docker compose -f docker-compose.prod.yml --env-file .env.production down",
-    "docker:prod:logs": "docker compose -f docker-compose.prod.yml --env-file .env.production logs -f"
+    "docker:prod:logs": "docker compose -f docker-compose.prod.yml --env-file .env.production logs -f",
+    "deploy:firebase": "node scripts/deploy-firebase.mjs",
+    "deploy:firebase:ssr": "FIREBASE_CLI_EXPERIMENTS=webframeworks node scripts/deploy-firebase-ssr.mjs"
   },
   "engines": {
     "node": ">=20"

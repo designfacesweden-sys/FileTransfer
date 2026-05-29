@@ -22,6 +22,10 @@ declare module '@auth/core/jwt' {
 }
 
 declare global {
+	interface Window {
+		adsbygoogle?: Record<string, unknown>[];
+	}
+
 	namespace App {
 		interface Locals {
 			auth(): Promise<Session | null>;

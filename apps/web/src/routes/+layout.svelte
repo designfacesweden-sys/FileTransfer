@@ -3,8 +3,8 @@
 	import '../app.css';
 	import favicon from '$lib/assets/favicon.svg';
 	import TopNavBar from '$lib/components/TopNavBar.svelte';
-	import BackgroundVideoControls from '$lib/components/BackgroundVideoControls.svelte';
-	import BackgroundVideoCountdown from '$lib/components/BackgroundVideoCountdown.svelte';
+	import BackgroundAdsense from '$lib/components/BackgroundAdsense.svelte';
+	import { PUBLIC_ADSENSE_CLIENT } from '$env/static/public';
 	import { PUBLIC_CLIENT_AUTH } from '$env/static/public';
 	import { clientUser, clientUserToSession } from '$lib/stores/session';
 
@@ -14,12 +14,17 @@
 		PUBLIC_CLIENT_AUTH === 'true' ? clientUserToSession($clientUser) : data.session
 	);
 
-	let bgVideo = $state<HTMLVideoElement | null>(null);
-
 	const darkOverlayRoutes = ['/pricing', '/support', '/logga-in', '/registrera', '/installningar'];
 </script>
 
 <svelte:head>
+	{#if PUBLIC_ADSENSE_CLIENT}
+		<script
+			async
+			src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client={PUBLIC_ADSENSE_CLIENT}"
+			crossorigin="anonymous"
+		></script>
+	{/if}
 	<link rel="icon" href={favicon} />
 	<title>Keira — Säker filöverföring</title>
 	<link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -31,18 +36,8 @@
 </svelte:head>
 
 <div class="shell">
-	<div class="shell__bg" aria-hidden="true">
-		<video
-			bind:this={bgVideo}
-			class="shell__video"
-			autoplay
-			muted
-			loop
-			playsinline
-			preload="auto"
-		>
-			<source src="/background.mp4" type="video/mp4" />
-		</video>
+	<div class="shell__bg">
+		<BackgroundAdsense />
 		{#if darkOverlayRoutes.includes($page.url.pathname)}
 			<div class="shell__overlay"></div>
 		{/if}
@@ -63,9 +58,7 @@
 
 	<footer class="shell__footer">
 		<div class="shell__footer-left">
-			<BackgroundVideoControls video={bgVideo} />
 			<span class="shell__footer-brand">Keira</span>
-			<BackgroundVideoCountdown video={bgVideo} />
 		</div>
 		<span class="shell__footer-credit">Skapat och förbehållet av CERCINO</span>
 	</footer>
@@ -84,13 +77,12 @@
 		position: absolute;
 		inset: 0;
 		z-index: 0;
-		pointer-events: none;
 	}
 
-	.shell__video {
-		height: 100%;
-		width: 100%;
-		object-fit: cover;
+	.shell__overlay,
+	.shell__vignette,
+	.shell__grain {
+		pointer-events: none;
 	}
 
 	.shell__overlay {
@@ -168,10 +160,6 @@
 		display: flex;
 		align-items: center;
 		gap: 0.5rem;
-	}
-
-	.shell__footer-left :global(.video-countdown) {
-		margin-left: 0.15rem;
 	}
 
 	.shell__footer-brand {

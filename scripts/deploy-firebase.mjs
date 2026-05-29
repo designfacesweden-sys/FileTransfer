@@ -67,6 +67,8 @@ run('npm', ['run', 'build:firebase', '-w', 'web'], {
 	PUBLIC_CLIENT_AUTH: clientAuth,
 	PUBLIC_SUPABASE_URL: process.env.PUBLIC_SUPABASE_URL ?? '',
 	PUBLIC_SUPABASE_PUBLISHABLE_KEY: process.env.PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? '',
+	PUBLIC_ADSENSE_CLIENT: process.env.PUBLIC_ADSENSE_CLIENT ?? '',
+	PUBLIC_ADSENSE_SLOT: process.env.PUBLIC_ADSENSE_SLOT ?? '',
 	AUTH_SECRET: process.env.AUTH_SECRET ?? 'firebase-static-build',
 	AUTH_TRUST_HOST: process.env.AUTH_TRUST_HOST ?? 'true'
 });

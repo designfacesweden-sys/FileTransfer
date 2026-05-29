@@ -95,3 +95,27 @@ export function downloadUrl(fileId: string, password?: string): string {
   const params = password ? `?password=${encodeURIComponent(password)}` : '';
   return `${base}/api/downloads/${fileId}${params}`;
 }
+
+export async function fetchAuthUser(userId: string): Promise<AuthUser> {
+  const res = await fetch(`${base}/api/auth/me/${userId}`);
+  if (!res.ok) {
+    const err = await readJson<{ error?: string }>(res).catch(() => ({}));
+    throw new Error(translateApiError(err.error ?? 'Kunde inte ladda profilen'));
+  }
+  return readJson<AuthUser>(res);
+}
+
+export async function patchAuthProfile(userId: string, name: string): Promise<AuthUser> {
+  const res = await fetch(`${base}/api/auth/profile/${userId}`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name })
+  });
+
+  if (!res.ok) {
+    const err = await readJson<{ error?: string }>(res).catch(() => ({}));
+    throw new Error(translateApiError(err.error ?? 'Kunde inte spara profilen'));
+  }
+
+  return readJson<AuthUser>(res);
+}

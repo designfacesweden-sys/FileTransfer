@@ -1,24 +1,76 @@
 <script lang="ts">
-	import { invalidateAll } from '$app/navigation';
-	import { enhance } from '$app/forms';
+	import { goto } from '$app/navigation';
+	import { fetchAuthUser, patchAuthProfile } from '$lib/api';
+	import { PUBLIC_CLIENT_AUTH } from '$env/static/public';
+	import { clientUser, setClientUser } from '$lib/stores/session';
 	import { PLAN_LABELS, PLANS, type AuthUser, type PlanId } from '@filetransfer/shared';
 	import type { PageData } from './$types';
 
-	let { data, form }: { data: PageData; form: import('./$types').ActionData } = $props();
+	let { data }: { data: PageData } = $props();
+
+	const useClientAuth = PUBLIC_CLIENT_AUTH === 'true';
 
 	let savingProfile = $state(false);
+	let profileError = $state('');
+	let profileSuccess = $state(false);
+	let clientProfileUser = $state<AuthUser | null>(null);
 
-	const user = $derived(form?.user ?? data.user);
+	$effect(() => {
+		if (!useClientAuth) return;
+		const stored = $clientUser;
+		if (!stored) {
+			void goto('/logga-in?redirectTo=/installningar');
+			return;
+		}
+		fetchAuthUser(stored.id)
+			.then((user) => {
+				clientProfileUser = user;
+				setClientUser({
+					id: user.id,
+					email: user.email,
+					name: user.name,
+					plan: user.plan
+				});
+			})
+			.catch(() => {
+				void goto('/logga-in?redirectTo=/installningar');
+			});
+	});
+
+	const user = $derived(useClientAuth ? (clientProfileUser ?? null) : (data.user ?? null));
 	let name = $state('');
 	const planId = $derived(user.plan as PlanId);
 	const planConfig = $derived(PLANS[planId]);
 	const planLabel = $derived(PLAN_LABELS[planId]);
 
 	$effect(() => {
-		if (!savingProfile) {
+		if (!savingProfile && user) {
 			name = user.name ?? '';
 		}
 	});
+
+	async function saveProfile(event: Event) {
+		event.preventDefault();
+		if (!user) return;
+		profileError = '';
+		profileSuccess = false;
+		savingProfile = true;
+		try {
+			const saved = await patchAuthProfile(user.id, name.trim());
+			clientProfileUser = saved;
+			setClientUser({
+				id: saved.id,
+				email: saved.email,
+				name: saved.name,
+				plan: saved.plan
+			});
+			profileSuccess = true;
+		} catch (err) {
+			profileError = err instanceof Error ? err.message : 'Kunde inte spara profilen.';
+		} finally {
+			savingProfile = false;
+		}
+	}
 
 	function userInitial() {
 		const source = user.name ?? user.email ?? '?';
@@ -45,6 +97,11 @@
 	<title>Inställningar — Keira</title>
 </svelte:head>
 
+{#if !user}
+	<section class="settings-page">
+		<p class="settings-page__loading">Laddar…</p>
+	</section>
+{:else}
 <section class="settings-page">
 	<div class="settings-page__panel glass">
 		<header class="settings-page__header">
@@ -60,23 +117,7 @@
 					<span>{userInitial()}</span>
 				</div>
 
-				<form
-					class="settings-profile__form"
-					method="POST"
-					action="?/updateProfile"
-					use:enhance={() => {
-						savingProfile = true;
-						return async ({ update: refreshForm, result }) => {
-							await refreshForm();
-							savingProfile = false;
-							if (result.type === 'success' && result.data && 'user' in result.data) {
-								const saved = result.data.user as AuthUser;
-								name = saved.name ?? '';
-								await invalidateAll();
-							}
-						};
-					}}
-				>
+				<form class="settings-profile__form" onsubmit={saveProfile}>
 					<label class="glass-label">
 						Namn
 						<input
@@ -100,9 +141,9 @@
 						/>
 					</label>
 
-					{#if form?.profileError}
-						<p class="settings-section__error">{form.profileError}</p>
-					{:else if form?.profileSuccess}
+					{#if profileError}
+						<p class="settings-section__error">{profileError}</p>
+					{:else if profileSuccess}
 						<p class="settings-section__success">Profilen sparades.</p>
 					{/if}
 
@@ -147,8 +188,14 @@
 		<a href="/" class="settings-page__back">← Tillbaka</a>
 	</div>
 </section>
+{/if}
 
 <style>
+	.settings-page__loading {
+		margin: auto;
+		color: rgba(250, 246, 240, 0.7);
+		font-size: 0.95rem;
+	}
 	.settings-page {
 		display: flex;
 		height: 100%;

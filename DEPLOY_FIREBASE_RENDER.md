@@ -3,7 +3,7 @@
 Architecture:
 
 ```
-keira.se          → Firebase Hosting (SvelteKit SSR)
+keira.se          → Firebase Hosting (static SPA, Spark/free)
 api.keira.se      → Render Web Service (@filetransfer/api)
 Database          → Supabase Postgres (used by API only)
 ```
@@ -61,7 +61,8 @@ Point `api.keira.se` (or your Render URL) in DNS to Render.
 
 | Variable | Value |
 |----------|--------|
-| `PUBLIC_API_URL` | Your Render API URL (e.g. `https://api.keira.se`) |
+| `PUBLIC_API_URL` | Your Render API URL (e.g. `https://keira-api.onrender.com`) — **not** `keira.se` |
+| `PUBLIC_CLIENT_AUTH` | `true` (required for static Firebase) |
 | `AUTH_SECRET` | same as used in production auth |
 | `AUTH_TRUST_HOST` | `true` |
 | `PUBLIC_SUPABASE_URL` | Supabase project URL |

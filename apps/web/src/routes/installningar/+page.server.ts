@@ -1,7 +1,8 @@
-import { fail, redirect } from '@sveltejs/kit';
-import { fetchAuthUser, patchAuthProfile } from '$lib/server/api';
+import { isFirebaseStaticBuild } from '$lib/firebase-static';
+import { redirect } from '@sveltejs/kit';
+import { fetchAuthUser } from '$lib/server/api';
 import type { AuthUser, PlanId } from '@filetransfer/shared';
-import type { Actions, PageServerLoad } from './$types';
+import type { PageServerLoad } from './$types';
 
 function userFromSession(session: {
 	user: { id: string; email?: string | null; name?: string | null; plan?: PlanId };
@@ -15,6 +16,10 @@ function userFromSession(session: {
 }
 
 export const load: PageServerLoad = async ({ locals, fetch }) => {
+	if (isFirebaseStaticBuild) {
+		return {};
+	}
+
 	const session = await locals.auth();
 	if (!session?.user?.id) {
 		throw redirect(303, '/logga-in?redirectTo=/installningar');
@@ -30,26 +35,4 @@ export const load: PageServerLoad = async ({ locals, fetch }) => {
 	}
 
 	return { session, user: userFromSession(session) };
-};
-
-export const actions: Actions = {
-	updateProfile: async ({ request, locals, fetch }) => {
-		const session = await locals.auth();
-		if (!session?.user?.id) {
-			throw redirect(303, '/logga-in?redirectTo=/installningar');
-		}
-
-		const formData = await request.formData();
-		const name = String(formData.get('name') ?? '').trim();
-		if (!name) {
-			return fail(400, { profileError: 'Ange ett namn.' });
-		}
-
-		const result = await patchAuthProfile(fetch, session.user.id, name);
-		if (!result.ok) {
-			return fail(result.status, { profileError: result.error });
-		}
-
-		return { profileSuccess: true, user: result.user };
-	}
 };

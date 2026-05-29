@@ -76,27 +76,35 @@ await downloadRoutes(app);
 await supportRoutes(app);
 await authRoutes(app);
 
-app.get('/health', async () => ({ ok: true }));
+let dbReady = false;
+
+app.get('/health', async () => ({
+  ok: dbReady,
+  db: dbReady ? 'connected' : 'disconnected'
+}));
 
 app.all('/api/uploads', handleTus);
 app.all('/api/uploads/*', handleTus);
 
+await app.listen({ port: config.port, host: '0.0.0.0' });
+console.log(`API listening on 0.0.0.0:${config.port} (public: ${config.apiPublicUrl})`);
+console.log(`Storage driver: ${config.storageDriver}`);
+console.log(`Database driver: ${config.databaseDriver}`);
+
 try {
   await verifyDatabaseConnection();
+  dbReady = true;
+  console.log('[db] PostgreSQL connected');
 } catch (err) {
   const message = err instanceof Error ? err.message : String(err);
   console.error('[db] Cannot connect to PostgreSQL:', message);
   if (message.includes('ENOTFOUND') && config.databaseUrl.includes('supabase')) {
     console.error(
-      '[db] Fix: set SUPABASE_REGION in apps/api/.env (Project Settings → General), ' +
+      '[db] Fix: set SUPABASE_REGION on Render, ' +
         'or use the Session pooler URI from Supabase → Database → Connection string.'
     );
   }
-  process.exit(1);
+  console.error(
+    '[db] Service is up but API routes need a database. Check DATABASE_URL on Render.'
+  );
 }
-
-app.listen({ port: config.port, host: '0.0.0.0' }).then(() => {
-  console.log(`API listening on ${config.apiPublicUrl}`);
-  console.log(`Storage driver: ${config.storageDriver}`);
-  console.log(`Database driver: ${config.databaseDriver}`);
-});

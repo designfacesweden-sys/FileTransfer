@@ -19,7 +19,8 @@ const rawDatabaseUrl = required(
 );
 
 export const config = {
-  port: Number(process.env.API_PORT ?? 3001),
+  // Render/Railway set PORT; local dev uses API_PORT
+  port: Number(process.env.PORT ?? process.env.API_PORT ?? 3001),
   databaseDriver: (process.env.DATABASE_DRIVER ??
     (isProduction ? 'postgres' : 'memory')) as 'memory' | 'postgres',
   databaseUrl: resolveDatabaseUrl(rawDatabaseUrl),

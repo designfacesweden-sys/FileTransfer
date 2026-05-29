@@ -35,7 +35,8 @@ Or one command: `npm run deploy:firebase` (reads `apps/web/.env.production` if p
 |----------|---------|
 | `NODE_ENV` | `production` |
 | `DATABASE_DRIVER` | `postgres` |
-| `DATABASE_URL` | Supabase connection string |
+| `DATABASE_URL` | Supabase **Session pooler** URI (`postgresql://postgres.[ref]:[password]@aws-0-eu-north-1.pooler.supabase.com:5432/postgres`) — **not** `https://….supabase.co` |
+| `SUPABASE_REGION` | e.g. `eu-north-1` (only if you use direct `db.*.supabase.co` URL instead of pooler) |
 | `API_PUBLIC_URL` | `https://api.keira.se` (or `https://your-service.onrender.com`) |
 | `WEB_PUBLIC_URL` | `https://keira.se` |
 | `CORS_ORIGINS` | `https://keira.se` |
@@ -43,6 +44,13 @@ Or one command: `npm run deploy:firebase` (reads `apps/web/.env.production` if p
 | `STORAGE_DRIVER` | `local` or `r2` |
 
 Point `api.keira.se` (or your Render URL) in DNS to Render.
+
+**Render troubleshooting**
+
+- **502 / `no-deploy`:** Build failed or service never started — open **Logs** on Render.
+- **`[db] Cannot connect`:** Wrong `DATABASE_URL`. Use pooler URI from Supabase → Database.
+- **Health times out:** API must listen on Render’s `PORT` (fixed in code; redeploy after pull).
+- **`/health` returns `db: disconnected`:** Service is up but Postgres env is wrong; fix `DATABASE_URL` and redeploy.
 
 ---
 

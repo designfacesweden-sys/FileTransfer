@@ -1,0 +1,28 @@
+# Render Blueprint — Keira API (monorepo root)
+# Dashboard can also set these manually; see DEPLOY_FIREBASE_RENDER.md
+services:
+  - type: web
+    name: keira-api
+    runtime: node
+    plan: free
+    rootDir: .
+    buildCommand: npm install && npm run build -w @filetransfer/api
+    startCommand: npm run start -w @filetransfer/api
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_DRIVER
+        value: postgres
+      - key: DATABASE_URL
+        sync: false
+      - key: API_PUBLIC_URL
+        value: https://keira-api.onrender.com
+      - key: WEB_PUBLIC_URL
+        value: https://keira.se
+      - key: CORS_ORIGINS
+        value: https://keira.se,https://keira-581e4.web.app
+      - key: JWT_SECRET
+        generateValue: true
+      - key: STORAGE_DRIVER
+        value: local
